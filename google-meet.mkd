@@ -1,0 +1,35 @@
+
+# Google Meet 
+
+Google Meet records videos at a variable frame rate, which can cause playback and editing issues in Blender. Blender works best with constant-frame-rate video, where frames are captured at evenly spaced intervals. Google Meet may vary the time between frames based on network and performance conditions, resulting in a variable-frame-rate video file.
+
+In such cases, it is recommended to convert the video to a constant-frame-rate format before importing it into Blender. This can be done using video conversion tools like FFmpeg, which allows you to specify a constant frame rate for the output video.
+
+For a typical Meet recording, **30 fps** is a sensible default for a YouTube video and is widely supported. However, Meet recordings can vary, so check the source's frame-rate information. 
+
+```bash
+ffmpeg -i input.mp4 -fps_mode cfr -r 30 -c:v libx264 -crf 18 -preset fast -c:a aac -b:a 192k output_cfr.mp4
+```
+
+## Verify a video has a constant frame rate
+
+A constant frame rate video will have only one unique frame duration. The following command uses `ffprobe` to list all unique frame durations in the video. If the output shows a single value, the video has a constant frame rate. Multiple values indicate a variable frame rate.
+
+```bash
+ffprobe -v error -select_streams v:0 -show_entries frame=pkt_duration_time -of csv=p=0 output_cfr.mp4 | sort -u
+```
+
+## Extract the shared screen and participants videos into two separate files
+
+Use the script to to1080p.sh to convert the video to 1080p resolution before extracting the shared screen and participants videos into separate files.
+
+```bash
+./to1080p.sh input.mp4 output_1080p.mp4
+```
+
+Then use the crop2.sh script to extract the shared screen and participants videos into separate files.
+
+```bash
+./crop2.sh output_1080p.mp4 shared_screen.mp4 participants.mp4
+```
+
