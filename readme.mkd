@@ -1,0 +1,12 @@
+
+# Video Production
+
+## Capturing
+
+### Google Meet
+Google Meet records videos at a variable frame rate, which can cause playback and editing issues in Blender. Convert the video to a constant-frame-rate format before importing it into Blender.
+
+## Editing
+
+### Blender
+

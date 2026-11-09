@@ -1,0 +1,32 @@
+
+# Google Meet 
+
+Google Meet records videos at a variable frame rate, which can cause playback and editing issues in Blender. Blender works best with constant-frame-rate video, where frames are captured at evenly spaced intervals. Google Meet may vary the time between frames based on network and performance conditions, resulting in a variable-frame-rate video file.
+
+## Detect if a video has a constant of variable frame rate
+
+Use the vfrcheck.sh script to find out if a file has constant of variable framerate. (It uses ffmpeg to do the check).
+You can also pass in a directory name for it to recursively check all video files within that directory.
+
+# Convert video to constant frame rate
+
+Convert the video to a constant-frame-rate before importing it into Blender.
+
+```bash
+ffmpeg -i input.mp4 -fps_mode cfr -r 24 -c:v libx264 -crf 18 -preset fast -c:a aac -b:a 192k output_cfr.mp4
+```
+
+## Extract the shared screen and participants videos into two separate files
+
+Use the crop2.sh script to extract the rectangle of the shared desktop screen, and the rectable of the participants video into two separate video files.
+
+```bash
+./crop2.sh google_meet.mp4 
+```
+
+Use the to1080p.sh script to convert the shared desktop screen video into 1080p resolution.
+
+```bash
+./to1080p.sh desktop_screen.mp4 desktop_screen_1080p.mp4
+```
+
